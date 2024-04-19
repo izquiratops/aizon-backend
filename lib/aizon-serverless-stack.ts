@@ -20,6 +20,7 @@ import {
   NodejsFunction,
   NodejsFunctionProps,
 } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 import IAM_ACCESS_KEY from '../secret';
 
@@ -27,11 +28,22 @@ export class AizonServerlessStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const widgetTable = new Table(this, 'Widget', {
+      tableName: 'Widget',
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+
     const restApi = new RestApi(this, 'AizonApi', {
       restApiName: 'AizonApi',
     });
 
-    const userPool = new UserPool(this, 'AizonUserPool', {
+    // Moved to AizonUserPool2 because I changed some attributes and messed up the first one
+    const userPool = new UserPool(this, 'AizonUserPool2', {
       signInAliases: { username: true, email: false },
       removalPolicy: RemovalPolicy.DESTROY,
       passwordPolicy: {
@@ -68,6 +80,7 @@ export class AizonServerlessStack extends Stack {
       runtime: Runtime.NODEJS_LATEST,
       memorySize: 256,
       timeout: Duration.seconds(30),
+      awsSdkConnectionReuse: true,
       environment: {
         ACCESS_KEY_ID: IAM_ACCESS_KEY.Id,
         ACCESS_KEY_SECRET: IAM_ACCESS_KEY.Secret,
@@ -76,40 +89,60 @@ export class AizonServerlessStack extends Stack {
         ACCOUNT_ID: this.account,
         COGNITO_USER_POOL_ID: userPool.userPoolId,
         COGNITO_APP_CLIENT_ID: appIntegrationClient.userPoolClientId,
+        WIDGET_TABLE_NAME: widgetTable.tableName,
       },
-      // It's really needed?
       bundling: {
         minify: true,
       },
     };
 
-    // AWS Function handlers
-    const login = restApi.root.addResource('login');
+    // Function handlers
     const postLoginFunction = new NodejsFunction(this, 'PostLoginFunction', {
-      awsSdkConnectionReuse: true,
       entry: './src/api/login.ts',
       ...functionSettings,
     });
+
+    const getWidgetFunction = new NodejsFunction(this, 'GetWidgetFunction', {
+      entry: './src/api/widget/get-widget.ts',
+      ...functionSettings,
+    });
+
+    // DynamoDB Permissions
+    widgetTable.grantReadData(getWidgetFunction);
+
+    // Resources and Methods
+    const login = restApi.root.addResource('login');
     login.addMethod('POST', new LambdaIntegration(postLoginFunction), {
       authorizationType: AuthorizationType.NONE,
     });
 
-    const checkAuth = restApi.root.addResource('check-auth');
-    const getCheckAuthFunction = new NodejsFunction(
-      this,
-      'GetCheckAuthFunction',
-      {
-        awsSdkConnectionReuse: true,
-        entry: './src/api/check-auth.ts',
-        ...functionSettings,
-      }
-    );
-    checkAuth.addMethod('GET', new LambdaIntegration(getCheckAuthFunction), {
+    const widgets = restApi.root.addResource('widgets');
+    // TODO: widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
+    //   authorizationType: AuthorizationType.COGNITO,
+    //   authorizer: {
+    //     authorizerId: authorizer.ref,
+    //   },
+    // });
+
+    const widget = widgets.addResource('{id}');
+    widget.addMethod('GET', new LambdaIntegration(getWidgetFunction), {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {
         authorizerId: authorizer.ref,
       },
     });
+    // TODO: widget.addMethod('PUT', new LambdaIntegration(putWidgetFunction), {
+    //   authorizationType: AuthorizationType.COGNITO,
+    //   authorizer: {
+    //     authorizerId: authorizer.ref,
+    //   },
+    // });
+    // TODO: widget.addMethod('DELETE', new LambdaIntegration(deleteWidgetFunction), {
+    //   authorizationType: AuthorizationType.COGNITO,
+    //   authorizer: {
+    //     authorizerId: authorizer.ref,
+    //   },
+    // });
 
     new CfnOutput(this, 'ApiURL', {
       value: restApi.url,

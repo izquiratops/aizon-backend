@@ -27,24 +27,32 @@ export const lambdaHandler = async (event: any = {}): Promise<any> => {
 
     const response = await cognito.send(command);
 
+    // Authentication result is not available, indicating bad credentials
     if (!response.AuthenticationResult) {
-      throw new Error('Authorization failed');
+      return {
+        statusCode: 422,
+        headers: { 'content-type': 'application/json' },
+        body: {
+          message:
+            'Invalid username or password. Please check your credentials and try again.',
+        },
+      };
     }
 
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
+      body: {
         token: response.AuthenticationResult?.IdToken,
-      }),
+      },
     };
   } catch (error: any) {
     return {
-      statusCode: 401,
+      statusCode: 500,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
+      body: {
         message: error.message,
-      }),
+      },
     };
   }
 };

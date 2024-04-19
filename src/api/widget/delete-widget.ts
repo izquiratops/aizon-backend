@@ -5,7 +5,7 @@ export const lambdaHandler = async (event: any = {}): Promise<any> => {
     statusCode: 200,
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
-      message: 'Auth works',
+      message: 'Delete widget dummy response',
     }),
   };
 };
