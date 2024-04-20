@@ -1,7 +1,7 @@
 export interface Widget {
   id: string;
   name: string;
-  type: 'BarChart' | 'PieChart' | 'Image';
+  type: string;
   data?: any;
   configuration?: any;
 }

@@ -150,6 +150,7 @@ export class AizonServerlessStack extends Stack {
       ...functionSettings,
     });
 
+    widgetTable.grantReadData(getScreensFunction);
     screenTable.grantReadData(getScreensFunction);
 
     const getScreenFunction = new NodejsFunction(this, 'GetScreenFunction', {
@@ -186,7 +187,7 @@ export class AizonServerlessStack extends Stack {
     });
 
     // Route: /screens
-    const screens = restApi.root.addResource('screens');
+    const screens = restApi.root.addResource('screen');
     screens.addMethod('GET', new LambdaIntegration(getScreensFunction), {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {
@@ -216,7 +217,7 @@ export class AizonServerlessStack extends Stack {
     });
 
     // Route: /widgets
-    const widgets = restApi.root.addResource('widgets');
+    const widgets = restApi.root.addResource('widget');
     widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {

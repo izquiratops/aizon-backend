@@ -1,12 +1,16 @@
 import middy from '@middy/core';
-import { APIGatewayProxyResult } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { ScreenStore } from '../../store/screen';
 
 const store = new ScreenStore();
 
-export const lambdaHandler = async (): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
   try {
-    const result = await store.getScreens();
+    const result = await store.getScreens(
+      event.queryStringParameters?.includeWidgets === 'true'
+    );
 
     return {
       statusCode: 200,

@@ -36,6 +36,10 @@ export const lambdaHandler = async (
     if (typeof screen !== 'object') {
       throw Error('Parsed product is not an object');
     }
+
+    if (!screen.name) {
+      throw Error('Screen lacks of required fields');
+    }
   } catch {
     return {
       statusCode: 400,

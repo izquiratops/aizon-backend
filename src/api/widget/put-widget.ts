@@ -36,6 +36,10 @@ export const lambdaHandler = async (
     if (typeof widget !== 'object') {
       throw Error('Parsed product is not an object');
     }
+
+    if (!widget.name || !widget.type) {
+      throw Error('Product lacks of required fields');
+    }
   } catch {
     return {
       statusCode: 400,
