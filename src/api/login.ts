@@ -32,27 +32,25 @@ export const lambdaHandler = async (event: any = {}): Promise<any> => {
       return {
         statusCode: 422,
         headers: { 'content-type': 'application/json' },
-        body: {
+        body: JSON.stringify({
           message:
             'Invalid username or password. Please check your credentials and try again.',
-        },
+        }),
       };
     }
 
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
-      body: {
+      body: JSON.stringify({
         token: response.AuthenticationResult?.IdToken,
-      },
+      }),
     };
   } catch (error: any) {
     return {
       statusCode: 500,
       headers: { 'content-type': 'application/json' },
-      body: {
-        message: error.message,
-      },
+      body: JSON.stringify(error),
     };
   }
 };
