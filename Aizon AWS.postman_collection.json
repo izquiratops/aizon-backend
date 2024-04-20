@@ -1,0 +1,629 @@
+{
+	"info": {
+		"_postman_id": "f236771a-b5c2-4947-af34-e8a68f7de348",
+		"name": "Aizon AWS",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) in \"Tests\" to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23514650",
+		"_collection_link": "https://awesome-iris.postman.co/workspace/IRIS~ec3ca13b-e747-446a-9fb6-949c991063c8/collection/23514650-f236771a-b5c2-4947-af34-e8a68f7de348?action=share&source=collection_link&creator=23514650"
+	},
+	"item": [
+		{
+			"name": "Widgets",
+			"item": [
+				{
+					"name": "Add one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/widgets/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widgets",
+								"{{id}}"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": [
+						{
+							"name": "Add one",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/widgets/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widgets",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 20 Apr 2024 10:30:21 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "6e9cbc26-2d47-416f-8e31-2cbe1b2b04f9"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "WhThkHqniGYEa0Q="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-6623993c-1092365742dfc29a3336ca7f;Parent=65bc9a80c5fbf89c;Sampled=0;lineage=dd8b6f2b:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 da67d85897eed331d26551a2e5a894dc.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "4t6z-BbbT1CZsRfbcmaung-MUTeRVQHoKtELXPsOJk91LxAKpls3WA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Widget created\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/widgets/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widgets",
+								"{{id}}"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": [
+						{
+							"name": "Get one",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/widgets/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widgets",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 20 Apr 2024 10:30:31 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "db3ffc67-3e65-4fee-93ee-f2478cb315ca"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "WhTjEHWEiGYEHZA="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66239946-4ddb654a3d64ea245755d5d8;Parent=7d91ff5e9a9ecbc4;Sampled=0;lineage=cd0f9f3f:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 da67d85897eed331d26551a2e5a894dc.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "8xhQV2eREyaSAhH5q1AB59mE5a3uelhd5CTxdc_GGFc62mE0sWhzFw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"name\": \"Testing put something\",\n    \"type\": \"Image 2\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/widgets/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widgets",
+								"{{id}}"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": [
+						{
+							"name": "Widget Copy",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/widgets/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widgets",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 20 Apr 2024 10:29:11 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "45876e91-291d-4316-92bf-4979c4b2aed7"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "WhTWiHKfCGYErKA="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-662398f6-6c8b152c5cda99c005bd46b4;Parent=77de3310538f8620;Sampled=0;lineage=ac591a06:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 da67d85897eed331d26551a2e5a894dc.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "lCcjTnE4SkZ6eISFAMiHypV3W2sK7dd7AG1JkstsOkTjM7Ksrr4uXw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Widget deleted\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/widgets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widgets"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": [
+						{
+							"name": "Get all",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/widgets",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widgets"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "62"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 20 Apr 2024 10:29:15 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "4d987d29-a551-4f5f-b1c3-cfce86b69cfc"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "WhTXUGFoCGYEOgA="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-662398fb-78acc42130df4e9c04d4da3c;Parent=053f2f3b2c9de681;Sampled=0;lineage=3479c382:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 da67d85897eed331d26551a2e5a894dc.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "qA6xg4cFLniJiAy1xtrWa1DQY_rwqdzzQzNCQeOHXw7ILCBcUpV3dw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"widgets\": [\n        {\n            \"id\": \"0\",\n            \"name\": \"TestObject\",\n            \"type\": \"BarChart\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/* -------- Setting up Bearer Token -------- */",
+							"const responseJson = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", responseJson['token']);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Jordi\",\r\n    \"password\": \"TestTest123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": [
+				{
+					"name": "Login as Jordi",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Jordi\",\r\n    \"password\": \"TestTest123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "987"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 20 Apr 2024 07:00:53 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "008aee70-7e1a-4298-8b92-d1ea72b8bd09"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "Wg017F8QCGYEu2A="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-66236825-3cf997bd2f6884c7535e850b;Parent=5d4d392c1e41b6e9;Sampled=0;lineage=4c46567a:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 e0e00cad5101fc9c4314eb9d81c18aca.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "MAD53-P3"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "x3R7Ph32QWQOzFJBHEFKCJKZr3YBs0JU166vAZrSeSnp_N7wSRRFDg=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJraWQiOiJpMzRqTUJ2d3NhMEpVMGVxdlV6SjdmUTZ0cEVyN0VPSG5WWkxWOWR0ZVwvWT0iLCJhbGciOiJSUzI1NiJ9.eyJvcmlnaW5fanRpIjoiNmY5NmQ2ZjUtOWQ4NC00MTNkLTgwODUtNDdkZmM4M2FhY2FhIiwic3ViIjoiNzFlOTIwZmUtYjAyMS03MGFmLTU1ODMtOGI3ZDYzMWU1ZmQ3IiwiYXVkIjoiNTQ4MWxrc2I3cDQ0bDVodjJhbDY3Z2dlNGUiLCJldmVudF9pZCI6IjU2NzYwYzRkLTJlNmYtNDY2ZC05ZTQ5LTVlZGMwOGNlNGExZCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzEzNTk2NDUzLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0zLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtM19BM2JKU1EycDMiLCJjb2duaXRvOnVzZXJuYW1lIjoiSm9yZGkiLCJleHAiOjE3MTM2ODI4NTMsImlhdCI6MTcxMzU5NjQ1MywianRpIjoiYjMwNDQ0NGMtMTI5ZS00OTRjLWFhZTctYTE5NjJiOTk3OThmIn0.GMljwmMRrxrftM1tBiDgqKH4XaLovgJOfj5gWIwkUXQwABwM2ga1I0wSEjARtRJEqkXQAZQ4nOT9ws6RaUime-PI8mJ2dKYfrZR54ZlZpLadSBrvdq7vnzve1T_xX98WiMhsaqT5IsgghA999pt2xGieDiNW4spbo_9MwBA0fphT3G3daYxtobhnxBWRyofWK82L2qxTwlm_ayOdu96905WLgLn9D1ehuDWeJMIZGJBuahu69aRWF_TPPT_gy3apn9aKF7J0sMD11lSLRStBBHZ9diTPEhEnQYdXLgkkosdsGgn-G6jeNpJFGaoSqHy78pGps6IydrE4H4bUh8qcZg\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
