@@ -1,20 +1,29 @@
 import middy from '@middy/core';
-import { DynamoDbWidget } from '../../store/widget';
+import { WidgetDynamoDb } from '../../store/widget';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-const store = new DynamoDbWidget();
+const store = new WidgetDynamoDb();
 
-export const lambdaHandler = async (event: any = {}): Promise<any> => {
+export const lambdaHandler = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
+  const id = event.pathParameters!.id;
+
+  if (!id) {
+    return {
+      statusCode: 400,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ message: "Missing 'id' parameter in path" }),
+    };
+  }
+
   try {
-    // '/prod/widget/230' will search for Widget with 230 as id value
-    const result = await store.getWidget(event.pathParameters.id);
+    const result = await store.getWidget(id);
 
     if (!result) {
       return {
         statusCode: 204,
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          message: 'Widget not found',
-        }),
+        body: 'Widget not found',
       };
     }
 

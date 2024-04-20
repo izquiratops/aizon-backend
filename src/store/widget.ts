@@ -8,28 +8,28 @@ import {
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Widget } from '../model/widget';
 
-export class DynamoDbWidget {
+export class WidgetDynamoDb {
   private static tableName = process.env.WIDGET_TABLE_NAME;
   private static client = new DynamoDBClient({});
   private static ddbDocClient = DynamoDBDocumentClient.from(
-    DynamoDbWidget.client
+    WidgetDynamoDb.client
   );
 
   public async getWidget(id: string): Promise<Widget | undefined> {
     const params = new GetCommand({
-      TableName: DynamoDbWidget.tableName,
+      TableName: WidgetDynamoDb.tableName,
       Key: {
         id,
       },
     });
 
-    const result = await DynamoDbWidget.ddbDocClient.send(params);
+    const result = await WidgetDynamoDb.ddbDocClient.send(params);
     return result.Item as Widget;
   }
 
   public async putWidget(widget: Widget): Promise<void> {
     const params = new PutCommand({
-      TableName: DynamoDbWidget.tableName,
+      TableName: WidgetDynamoDb.tableName,
       Item: {
         id: widget.id,
         name: widget.name,
@@ -39,27 +39,27 @@ export class DynamoDbWidget {
       },
     });
 
-    await DynamoDbWidget.ddbDocClient.send(params);
+    await WidgetDynamoDb.ddbDocClient.send(params);
   }
 
   public async deleteWidget(id: string): Promise<void> {
     const params = new DeleteCommand({
-      TableName: DynamoDbWidget.tableName,
+      TableName: WidgetDynamoDb.tableName,
       Key: {
         id,
       },
     });
 
-    await DynamoDbWidget.ddbDocClient.send(params);
+    await WidgetDynamoDb.ddbDocClient.send(params);
   }
 
   public async getWidgets(): Promise<Array<Widget> | undefined> {
     const params = new ScanCommand({
-      TableName: DynamoDbWidget.tableName,
+      TableName: WidgetDynamoDb.tableName,
       Limit: 30,
     });
 
-    const result = await DynamoDbWidget.ddbDocClient.send(params);
+    const result = await WidgetDynamoDb.ddbDocClient.send(params);
     return result.Items as Array<Widget>;
   }
 }
