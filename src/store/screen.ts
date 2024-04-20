@@ -50,13 +50,14 @@ export class ScreenStore {
   }
 
   public async putScreen(screen: Screen): Promise<void> {
-    // TODO: Explain default values on widget lists. You want to add an [] if doesn't exists
-    // (it's a not required field too) and you don't want to define widgets either.
     const params = new PutCommand({
       TableName: ScreenStore.tableName,
       Item: {
         id: screen.id,
         name: screen.name,
+        // widgetIds is an optional field because sometimes could be undefined outside the database.
+        // This is specially true when the request returns a screen object to the client. Related objects are returned in their place.
+        // Their value on database must be an array always though.
         widgetIds: screen.widgetIds ?? [],
       },
     });
