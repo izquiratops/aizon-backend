@@ -102,6 +102,11 @@ export class AizonServerlessStack extends Stack {
       ...functionSettings,
     });
 
+    const getWidgetsFunction = new NodejsFunction(this, 'GetWidgetsFunction', {
+      entry: './src/api/widget/get-widgets.ts',
+      ...functionSettings,
+    });
+
     const getWidgetFunction = new NodejsFunction(this, 'GetWidgetFunction', {
       entry: './src/api/widget/get-widget.ts',
       ...functionSettings,
@@ -109,6 +114,7 @@ export class AizonServerlessStack extends Stack {
 
     // DynamoDB Permissions
     widgetTable.grantReadData(getWidgetFunction);
+    widgetTable.grantReadData(getWidgetsFunction);
 
     // Resources and Methods
     const login = restApi.root.addResource('login');
@@ -117,12 +123,12 @@ export class AizonServerlessStack extends Stack {
     });
 
     const widgets = restApi.root.addResource('widgets');
-    // TODO: widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
-    //   authorizationType: AuthorizationType.COGNITO,
-    //   authorizer: {
-    //     authorizerId: authorizer.ref,
-    //   },
-    // });
+    widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.ref,
+      },
+    });
 
     const widget = widgets.addResource('{id}');
     widget.addMethod('GET', new LambdaIntegration(getWidgetFunction), {
@@ -131,12 +137,14 @@ export class AizonServerlessStack extends Stack {
         authorizerId: authorizer.ref,
       },
     });
+
     // TODO: widget.addMethod('PUT', new LambdaIntegration(putWidgetFunction), {
     //   authorizationType: AuthorizationType.COGNITO,
     //   authorizer: {
     //     authorizerId: authorizer.ref,
     //   },
     // });
+
     // TODO: widget.addMethod('DELETE', new LambdaIntegration(deleteWidgetFunction), {
     //   authorizationType: AuthorizationType.COGNITO,
     //   authorizer: {

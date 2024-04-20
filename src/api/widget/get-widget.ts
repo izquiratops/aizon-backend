@@ -12,9 +12,9 @@ export const lambdaHandler = async (event: any = {}): Promise<any> => {
       return {
         statusCode: 204,
         headers: { 'content-type': 'application/json' },
-        body: {
+        body: JSON.stringify({
           message: 'Widget not found',
-        },
+        }),
       };
     }
 
@@ -26,7 +26,8 @@ export const lambdaHandler = async (event: any = {}): Promise<any> => {
   } catch (error: any) {
     return {
       statusCode: 500,
-      message: error.message,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(error),
     };
   }
 };
