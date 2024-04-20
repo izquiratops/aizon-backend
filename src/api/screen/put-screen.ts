@@ -1,9 +1,9 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
-import { Widget } from '../../model/widget';
+import { ScreenDynamoDb } from '../../store/screen';
+import { Screen } from '../../model/screen';
 
-const store = new WidgetDynamoDb();
+const store = new ScreenDynamoDb();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
@@ -28,12 +28,12 @@ export const lambdaHandler = async (
     };
   }
 
-  // Parse the body filled with the Widget object
-  let widget: Widget;
+  // Parse the body filled with the Screen object
+  let screen: Screen;
   try {
-    widget = JSON.parse(event.body) as Widget;
+    screen = JSON.parse(event.body) as Screen;
 
-    if (typeof widget !== 'object') {
+    if (typeof screen !== 'object') {
       throw Error('Parsed product is not an object');
     }
   } catch {
@@ -46,26 +46,26 @@ export const lambdaHandler = async (
     };
   }
 
-  // Make sure the route matches with the Widget Id
-  if (id !== widget.id) {
+  // Make sure the route matches with the Screen Id
+  if (id !== screen.id) {
     return {
       statusCode: 400,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: `Requested Id (${id}) does not match the Widget Id from body (${widget.id})`,
+        message: `Requested Id (${id}) does not match the Screen Id from body (${screen.id})`,
       }),
     };
   }
 
   try {
-    // Edit the widget or add a new one if it's not found
-    await store.putWidget(widget);
+    // Edit the screen or add a new one if it's not found
+    await store.putScreen(screen);
 
     return {
       statusCode: 201,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: 'Widget created',
+        message: 'Screen created',
       }),
     };
   } catch (error: any) {

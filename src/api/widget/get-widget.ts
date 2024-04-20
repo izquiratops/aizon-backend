@@ -1,12 +1,14 @@
 import middy from '@middy/core';
-import { WidgetDynamoDb } from '../../store/widget';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { WidgetDynamoDb } from '../../store/widget';
 
 const store = new WidgetDynamoDb();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  // Extract the ID parameter from the path parameters
+  // Example: domain.com/prod/widget/1 will get the Widget with Id value 1
   const id = event.pathParameters!.id;
 
   if (!id) {
@@ -18,6 +20,7 @@ export const lambdaHandler = async (
   }
 
   try {
+    // Retrieve the widget from the DynamoDB table using the Id
     const result = await store.getWidget(id);
 
     if (!result) {

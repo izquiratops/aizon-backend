@@ -1,20 +1,31 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
+import { ScreenDynamoDb } from '../../store/screen';
 
-const store = new WidgetDynamoDb();
+const store = new ScreenDynamoDb();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  // Extract the ID parameter from the path parameters
+  const id = event.pathParameters!.id;
+
+  if (!id) {
+    return {
+      statusCode: 400,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ message: "Missing 'id' parameter in path" }),
+    };
+  }
+
   try {
-    const result = await store.getWidgets();
+    await store.deleteScreen(id);
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        widgets: result,
+        message: 'Screen deleted',
       }),
     };
   } catch (error: any) {

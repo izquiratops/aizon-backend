@@ -1,13 +1,14 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
+import { ScreenDynamoDb } from '../../store/screen';
 
-const store = new WidgetDynamoDb();
+const store = new ScreenDynamoDb();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
+  // Example: domain.com/prod/screen/1 will get the Screen with Id value 1
   const id = event.pathParameters!.id;
 
   if (!id) {
@@ -19,14 +20,20 @@ export const lambdaHandler = async (
   }
 
   try {
-    await store.deleteWidget(id);
+    // Retrieve the screen from the DynamoDB table using the Id
+    const result = await store.getScreen(id);
+
+    if (!result) {
+      return {
+        statusCode: 204,
+        body: 'Screen not found',
+      };
+    }
 
     return {
-      statusCode: 201,
+      statusCode: 200,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        message: 'Widget deleted',
-      }),
+      body: JSON.stringify(result),
     };
   } catch (error: any) {
     return {
