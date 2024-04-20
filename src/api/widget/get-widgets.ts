@@ -1,12 +1,10 @@
 import middy from '@middy/core';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
+import { APIGatewayProxyResult } from 'aws-lambda';
+import { WidgetStore } from '../../store/widget';
 
-const store = new WidgetDynamoDb();
+const store = new WidgetStore();
 
-export const lambdaHandler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (): Promise<APIGatewayProxyResult> => {
   try {
     const result = await store.getWidgets();
 

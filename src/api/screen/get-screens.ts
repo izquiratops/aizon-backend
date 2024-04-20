@@ -1,12 +1,10 @@
 import middy from '@middy/core';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { ScreenDynamoDb } from '../../store/screen';
+import { APIGatewayProxyResult } from 'aws-lambda';
+import { ScreenStore } from '../../store/screen';
 
-const store = new ScreenDynamoDb();
+const store = new ScreenStore();
 
-export const lambdaHandler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
+export const lambdaHandler = async (): Promise<APIGatewayProxyResult> => {
   try {
     const result = await store.getScreens();
 

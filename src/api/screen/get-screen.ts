@@ -1,15 +1,15 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { ScreenDynamoDb } from '../../store/screen';
+import { ScreenStore } from '../../store/screen';
 
-const store = new ScreenDynamoDb();
+const store = new ScreenStore();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
   // Example: domain.com/prod/screen/1 will get the Screen with Id value 1
-  const id = event.pathParameters!.id;
+  const id = event.pathParameters!.screenId;
 
   if (!id) {
     return {
@@ -21,7 +21,10 @@ export const lambdaHandler = async (
 
   try {
     // Retrieve the screen from the DynamoDB table using the Id
-    const result = await store.getScreen(id);
+    const result = await store.getScreenById(
+      id,
+      event.queryStringParameters?.includeWidgets === 'true'
+    );
 
     if (!result) {
       return {

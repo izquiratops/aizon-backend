@@ -1,14 +1,14 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { ScreenDynamoDb } from '../../store/screen';
+import { ScreenStore } from '../../store/screen';
 
-const store = new ScreenDynamoDb();
+const store = new ScreenStore();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
-  const id = event.pathParameters!.id;
+  const id = event.pathParameters!.screenId;
 
   if (!id) {
     return {
@@ -19,7 +19,7 @@ export const lambdaHandler = async (
   }
 
   try {
-    await store.deleteScreen(id);
+    await store.deleteScreenById(id);
 
     return {
       statusCode: 201,

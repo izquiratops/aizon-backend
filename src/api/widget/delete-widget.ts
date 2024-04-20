@@ -1,14 +1,14 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
+import { WidgetStore } from '../../store/widget';
 
-const store = new WidgetDynamoDb();
+const store = new WidgetStore();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
-  const id = event.pathParameters!.id;
+  const id = event.pathParameters!.widgetId;
 
   if (!id) {
     return {
@@ -19,7 +19,7 @@ export const lambdaHandler = async (
   }
 
   try {
-    await store.deleteWidget(id);
+    await store.deleteWidgetById(id);
 
     return {
       statusCode: 201,

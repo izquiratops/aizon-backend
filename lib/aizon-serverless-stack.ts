@@ -107,7 +107,7 @@ export class AizonServerlessStack extends Stack {
       },
     };
 
-    // Function handlers
+    // Function handlers and their Table permissions
     const postLoginFunction = new NodejsFunction(this, 'PostLoginFunction', {
       entry: './src/api/login.ts',
       ...functionSettings,
@@ -118,15 +118,21 @@ export class AizonServerlessStack extends Stack {
       ...functionSettings,
     });
 
+    widgetTable.grantReadData(getWidgetsFunction);
+
     const getWidgetFunction = new NodejsFunction(this, 'GetWidgetFunction', {
       entry: './src/api/widget/get-widget.ts',
       ...functionSettings,
     });
 
+    widgetTable.grantReadData(getWidgetFunction);
+
     const putWidgetFunction = new NodejsFunction(this, 'PutWidgetFunction', {
       entry: './src/api/widget/put-widget.ts',
       ...functionSettings,
     });
+
+    widgetTable.grantWriteData(putWidgetFunction);
 
     const deleteWidgetFunction = new NodejsFunction(
       this,
@@ -137,20 +143,29 @@ export class AizonServerlessStack extends Stack {
       }
     );
 
+    widgetTable.grantWriteData(deleteWidgetFunction);
+
     const getScreensFunction = new NodejsFunction(this, 'GetScreensFunction', {
       entry: './src/api/screen/get-screens.ts',
       ...functionSettings,
     });
+
+    screenTable.grantReadData(getScreensFunction);
 
     const getScreenFunction = new NodejsFunction(this, 'GetScreenFunction', {
       entry: './src/api/screen/get-screen.ts',
       ...functionSettings,
     });
 
+    widgetTable.grantReadData(getScreenFunction);
+    screenTable.grantReadData(getScreenFunction);
+
     const putScreenFunction = new NodejsFunction(this, 'PutScreenFunction', {
       entry: './src/api/screen/put-screen.ts',
       ...functionSettings,
     });
+
+    screenTable.grantWriteData(putScreenFunction);
 
     const deleteScreenFunction = new NodejsFunction(
       this,
@@ -161,51 +176,16 @@ export class AizonServerlessStack extends Stack {
       }
     );
 
-    // DynamoDB Permissions
-    widgetTable.grantReadData(getWidgetsFunction);
-    widgetTable.grantReadData(getWidgetFunction);
-    widgetTable.grantWriteData(putWidgetFunction);
-    widgetTable.grantWriteData(deleteWidgetFunction);
-
-    screenTable.grantReadData(getScreensFunction);
-    screenTable.grantReadData(getScreenFunction);
-    screenTable.grantWriteData(putScreenFunction);
     screenTable.grantWriteData(deleteScreenFunction);
 
     // Resources and Methods
+    // Route: /login
     const login = restApi.root.addResource('login');
     login.addMethod('POST', new LambdaIntegration(postLoginFunction), {
       authorizationType: AuthorizationType.NONE,
     });
 
-    const widgets = restApi.root.addResource('widgets');
-    widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.ref,
-      },
-    });
-
-    const widget = widgets.addResource('{id}');
-    widget.addMethod('GET', new LambdaIntegration(getWidgetFunction), {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.ref,
-      },
-    });
-    widget.addMethod('PUT', new LambdaIntegration(putWidgetFunction), {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.ref,
-      },
-    });
-    widget.addMethod('DELETE', new LambdaIntegration(deleteWidgetFunction), {
-      authorizationType: AuthorizationType.COGNITO,
-      authorizer: {
-        authorizerId: authorizer.ref,
-      },
-    });
-
+    // Route: /screens
     const screens = restApi.root.addResource('screens');
     screens.addMethod('GET', new LambdaIntegration(getScreensFunction), {
       authorizationType: AuthorizationType.COGNITO,
@@ -214,7 +194,8 @@ export class AizonServerlessStack extends Stack {
       },
     });
 
-    const screen = screens.addResource('{id}');
+    // Route: /screens/{screenId}
+    const screen = screens.addResource('{screenId}');
     screen.addMethod('GET', new LambdaIntegration(getScreenFunction), {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {
@@ -228,6 +209,36 @@ export class AizonServerlessStack extends Stack {
       },
     });
     screen.addMethod('DELETE', new LambdaIntegration(deleteScreenFunction), {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.ref,
+      },
+    });
+
+    // Route: /widgets
+    const widgets = restApi.root.addResource('widgets');
+    widgets.addMethod('GET', new LambdaIntegration(getWidgetsFunction), {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.ref,
+      },
+    });
+
+    // Route: /widgets/{widgetId}
+    const widget = widgets.addResource('{widgetId}');
+    widget.addMethod('GET', new LambdaIntegration(getWidgetFunction), {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.ref,
+      },
+    });
+    widget.addMethod('PUT', new LambdaIntegration(putWidgetFunction), {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: authorizer.ref,
+      },
+    });
+    widget.addMethod('DELETE', new LambdaIntegration(deleteWidgetFunction), {
       authorizationType: AuthorizationType.COGNITO,
       authorizer: {
         authorizerId: authorizer.ref,

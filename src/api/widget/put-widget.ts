@@ -1,15 +1,15 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { WidgetDynamoDb } from '../../store/widget';
+import { WidgetStore } from '../../store/widget';
 import { Widget } from '../../model/widget';
 
-const store = new WidgetDynamoDb();
+const store = new WidgetStore();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
-  const id = event.pathParameters!.id;
+  const id = event.pathParameters!.widgetId;
 
   // Some checkings to make sure all the required data is there
   if (!id) {

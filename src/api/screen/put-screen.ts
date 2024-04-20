@@ -1,15 +1,15 @@
 import middy from '@middy/core';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
-import { ScreenDynamoDb } from '../../store/screen';
+import { ScreenStore } from '../../store/screen';
 import { Screen } from '../../model/screen';
 
-const store = new ScreenDynamoDb();
+const store = new ScreenStore();
 
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   // Extract the ID parameter from the path parameters
-  const id = event.pathParameters!.id;
+  const id = event.pathParameters!.screenId;
 
   // Some checkings to make sure all the required data is there
   if (!id) {
@@ -31,7 +31,7 @@ export const lambdaHandler = async (
   // Parse the body filled with the Screen object
   let screen: Screen;
   try {
-    screen = JSON.parse(event.body) as Screen;
+    screen = JSON.parse(event.body);
 
     if (typeof screen !== 'object') {
       throw Error('Parsed product is not an object');
