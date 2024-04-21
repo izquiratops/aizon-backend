@@ -1,0 +1,1099 @@
+{
+	"info": {
+		"_postman_id": "c48bd2d6-685d-453e-b39c-df0b571d927d",
+		"name": "Aizon Serverless API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34418409"
+	},
+	"item": [
+		{
+			"name": "Widgets",
+			"item": [
+				{
+					"name": "Add one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Widget's name\",\r\n    \"type\": \"Widget's type\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/widget/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widget",
+								"{{id}}"
+							]
+						},
+						"description": "This endpoint allows you to create or update (if it's already created) a specific widget by sending an HTTP PUT request to the specified URL with the widget's ID in the path parameter. The request should include a JSON payload in the raw request body, containing the updated values for the widget's ID, name, and type.\n\n### Request Parameters\n\n- `id`: The ID of the widget to be updated.\n- `name`: The updated name of the widget.\n- `type`: The updated type of the widget.\n    \n\n### Response\n\nUpon a successful update, the response will include a message confirming the update.\n\n#### Example\n\n``` json\n{\n    \"message\": \"Widget updated successfully\"\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "Add one",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Widget's name\",\r\n    \"type\": \"Widget's type\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/widget/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widget",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:46:04 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "7c891f1f-d9ad-4579-a89b-3fc75e6654bb"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl33YEXxCGYEN4g="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256cfb-48dec6ad1558326663c3d4ae;Parent=751469eb4debcd60;Sampled=0;lineage=dd8b6f2b:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "vHoYBgBRq7OH5_xNtodqDLLJDm8sqYFVsC17zeRqahB3ckzI5r6vCw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Widget created\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/widget/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widget",
+								"{{id}}"
+							]
+						},
+						"description": "This endpoint retrieves information about a specific widget by providing the widget's ID in the URL path. The response will contain the ID, name, and type of the widget in JSON format.\n\n### Request\n\n- Method: GET\n- URL: {{base_url}}/widget/{{id}}\n    \n\n### Response\n\n- Status: 200\n- Content-Type: application/json\n    \n\nExample Response Body:\n\n``` json\n{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"type\": \"\"\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "Get one",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/widget/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widget",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:47:31 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "b6b5ca5a-4762-4cc6-aeb4-adb3983bd981"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4E6Fm8iGYELFQ="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256d52-1906c5a12a8ddb385ce4dacc;Parent=659ea5b3827fe953;Sampled=0;lineage=cd0f9f3f:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "W0fXaSFmf2XA6KyQ6lKABcGwKf2zXvQpfckfVxcYm2pwQH_wJpMYyA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"10\",\n    \"name\": \"Widget's name\",\n    \"type\": \"Widget's type\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/widget/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widget",
+								"{{id}}"
+							]
+						},
+						"description": "This endpoint makes an HTTP DELETE request to delete a specific widget based on the provided ID.\n\n### Request Parameters\n\n- `id`: The ID of the widget to be deleted.\n- `name`: The name of the widget.\n- `type`: The type of the widget.\n    \n\n### Response\n\nUpon successful deletion, the server returns a status code of 201 and a JSON response with a `message` indicating the success of the operation.\n\n#### Example Response\n\n``` json\n{\n    \"message\": \"Widget deleted\"\n}\n\n ```"
+					},
+					"response": [
+						{
+							"name": "Delete one",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/widget/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widget",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:49:36 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "f5d26d11-09de-47a8-82dd-4204a4cd2ffc"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4YcHZtiGYEaVg="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256dcf-37c7c61849a53af261b60a4d;Parent=150c3c570ed0851a;Sampled=0;lineage=ac591a06:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "FjSjhP2cyyKWw04_C-xvbtmuyja8MmHY7F3wElRt84B2oXqaU0MJNA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Widget deleted\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/widget",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"widget"
+							]
+						},
+						"description": "\nThis endpoint retrieves a list of widgets. The response will contain an array of objects, where each object represents a widget and includes the widget's ID, name, and type.\n\nExample response:\n```json\n{\n    \"widgets\": [\n        {\n            \"id\": \"\",\n            \"name\": \"\",\n            \"type\": \"\"\n        }\n    ]\n}\n```\n"
+					},
+					"response": [
+						{
+							"name": "Get all",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/widget",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"widget"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "285"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:49:41 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "8db181df-99fb-40f9-aa66-40fd677c1b7e"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4ZUGDBCGYEPXw="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256dd4-41d890e455b4edbf0e89a3f2;Parent=2c7d9d1b101f5bcd;Sampled=0;lineage=3479c382:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "cHgBB4kYI89TvS4w2o7_J_xNu6PpiSXKG-1w1EquLJmiRSrzwN2YTw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"widgets\": [\n        {\n            \"id\": \"2\",\n            \"name\": \"Jerald\",\n            \"type\": \"BH\"\n        },\n        {\n            \"id\": \"1\",\n            \"name\": \"Michel\",\n            \"type\": \"MM\"\n        },\n        {\n            \"id\": \"6\",\n            \"name\": \"Regan\",\n            \"type\": \"ID\"\n        },\n        {\n            \"id\": \"0\",\n            \"name\": \"Wilburn\",\n            \"type\": \"PL\"\n        },\n        {\n            \"id\": \"5\",\n            \"name\": \"Santino\",\n            \"type\": \"RU\"\n        },\n        {\n            \"id\": \"4\",\n            \"name\": \"Sydni\",\n            \"type\": \"AL\"\n        },\n        {\n            \"id\": \"3\",\n            \"name\": \"Reina\",\n            \"type\": \"TM\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Screens",
+			"item": [
+				{
+					"name": "Add one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Example Screen\",\r\n    \"widgetIds\": [\"2\", \"5\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/screen/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"screen",
+								"{{id}}"
+							]
+						},
+						"description": "\nThis endpoint allows you to update a specific screen using the screen's ID. The request should be sent as an HTTP PUT to the specified URL with the screen ID in the path parameter. The request body should include the screen ID, name, and an array of widget IDs.\n\n### Request Body\n- `id` (string): The ID of the screen.\n- `name` (string): The name of the screen.\n- `widgetIds` (array of strings): An array of widget IDs associated with the screen.\n\n### Response\nUpon a successful update, the API responds with a status code of 201 and a JSON object containing a message.\n\n#### Example Response\n```json\n{\n    \"message\": \"\"\n}\n```\n"
+					},
+					"response": [
+						{
+							"name": "Add one",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Example Screen\",\r\n    \"widgetIds\": [\"2\", \"5\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/screen/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"screen",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:52:02 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "1cbd994d-26d8-480a-9b44-4f115bd6ab68"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4vdFPdiGYETBQ="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256e62-4b886cf667d33db038ea0839;Parent=4edd6f332ebe1be2;Sampled=0;lineage=e4cb0ad7:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "v5APVt8-iL5MXfhJCLo89fJsHWqfeOjk7S1AK2iwb4NIhHvJB3fQqA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Screen created\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/screen/{{id}}?includeWidgets=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"screen",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "includeWidgets",
+									"value": "true"
+								}
+							]
+						},
+						"description": "\nThis endpoint makes an HTTP GET request to retrieve information about a specific screen, including the widgets it contains. By including the query parameter \"includeWidgets=true\", the response will also include details about the widgets on the screen.\n\nThe response will have a status code of 200 and a content type of \"application/json\". The response body will include the screen's ID, name, and an array of widgets, each containing their respective ID, name, and type.\n\nExample response:\n```json\n{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"widgets\": [\n    {\n      \"id\": \"\",\n      \"name\": \"\",\n      \"type\": \"\"\n    }\n  ]\n}\n```\n"
+					},
+					"response": [
+						{
+							"name": "Get one",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/screen/{{id}}?includeWidgets=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"screen",
+										"{{id}}"
+									],
+									"query": [
+										{
+											"key": "includeWidgets",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "126"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:52:13 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "19285092-ae67-4d2f-9878-c57dbc6e2d4a"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4xDEuYCGYEHQQ="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256e6c-7bb5488d7896caa15b37c6a8;Parent=4eb2cd3ea972eb14;Sampled=0;lineage=474e2eb1:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "uXNtv5smtYu10I5fiLotkBxc8JcHzq3FTzyRMuxZAZqnwOkuHT6eoA=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"10\",\n    \"name\": \"Example Screen\",\n    \"widgets\": [\n        {\n            \"id\": \"2\",\n            \"name\": \"Jerald\",\n            \"type\": \"BH\"\n        },\n        {\n            \"id\": \"5\",\n            \"name\": \"Santino\",\n            \"type\": \"RU\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete one",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/screen/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"screen",
+								"{{id}}"
+							]
+						},
+						"description": "\nThis endpoint makes an HTTP DELETE request to delete a screen with the specified ID. The request should include the ID of the screen to be deleted, along with its name and type in the raw request body.\n\n### Request Body\n- `id` (string): The ID of the screen to be deleted.\n- `name` (string): The name of the screen.\n- `type` (string): The type of the screen.\n\n### Response\nUpon successful deletion, the response will have a status code of 201 and a JSON object with a `message` key indicating the success of the operation.\n\n#### Example Response\n```json\n{\n    \"message\": \"\"\n}\n```\n"
+					},
+					"response": [
+						{
+							"name": "Delete one",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{id}}\",\r\n    \"name\": \"Testing put something\",\r\n    \"type\": \"Image 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/screen/{{id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"screen",
+										"{{id}}"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:52:25 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "5a5036a8-7153-494c-8302-803fc438ae6c"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl4y6Gi8iGYEKbw="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256e78-5e5c3fd8084e26ab72f72a55;Parent=2dff98788621c4d1;Sampled=0;lineage=8e67281c:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "bqjyK5_lTAlvFjxBx5ewroeLkU-DAHS_acRpgCGROE1_O1s05Kv23g=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Screen deleted\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/screen?includeWidgets=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"screen"
+							],
+							"query": [
+								{
+									"key": "includeWidgets",
+									"value": "true"
+								}
+							]
+						},
+						"description": "\nThis endpoint retrieves screens with their associated widgets. By including the query parameter includeWidgets=true, the response will include the widgets for each screen.\n\nThe response will be in JSON format with an array of screens, where each screen contains an id, name, and an array of widgets, each with an id, name, and type.\n\nExample response:\n```json\n{\n  \"screens\": [\n    {\n      \"id\": \"\",\n      \"name\": \"\",\n      \"widgets\": [\n        {\n          \"id\": \"\",\n          \"name\": \"\",\n          \"type\": \"\"\n        }\n      ]\n    }\n  ]\n}\n```\n"
+					},
+					"response": [
+						{
+							"name": "Get all",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/screen?includeWidgets=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"screen"
+									],
+									"query": [
+										{
+											"key": "includeWidgets",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "653"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 21 Apr 2024 19:52:33 GMT"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "b00c2ee8-7a38-4b28-bfdd-98d058b9fe49"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Wl40IHx5iGYEF_A="
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-66256e80-57f7cfe654e22dd84bfeef48;Parent=615dd973c88baf35;Sampled=0;lineage=03582701:0"
+								},
+								{
+									"key": "X-Cache",
+									"value": "Miss from cloudfront"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 7270d267f6bffc8aa59d396dd86d60a8.cloudfront.net (CloudFront)"
+								},
+								{
+									"key": "X-Amz-Cf-Pop",
+									"value": "MAD53-P3"
+								},
+								{
+									"key": "X-Amz-Cf-Id",
+									"value": "l_GWxyTGQ2yeN28hVKkA_kKlrHEpleNtev8n-IvE9GVXE_M7G7hqBw=="
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"screens\": [\n        {\n            \"id\": \"2\",\n            \"name\": \"officia qui iusto\",\n            \"widgets\": [\n                {\n                    \"id\": \"0\",\n                    \"name\": \"Wilburn\",\n                    \"type\": \"PL\"\n                },\n                {\n                    \"id\": \"3\",\n                    \"name\": \"Reina\",\n                    \"type\": \"TM\"\n                }\n            ]\n        },\n        {\n            \"id\": \"1\",\n            \"name\": \"odio distinctio ipsam\",\n            \"widgets\": [\n                {\n                    \"id\": \"1\",\n                    \"name\": \"Michel\",\n                    \"type\": \"MM\"\n                },\n                {\n                    \"id\": \"2\",\n                    \"name\": \"Jerald\",\n                    \"type\": \"BH\"\n                }\n            ]\n        },\n        {\n            \"id\": \"0\",\n            \"name\": \"et nostrum fugit\",\n            \"widgets\": [\n                {\n                    \"id\": \"0\",\n                    \"name\": \"Wilburn\",\n                    \"type\": \"PL\"\n                }\n            ]\n        },\n        {\n            \"id\": \"4\",\n            \"name\": \"dolore ipsum quod\",\n            \"widgets\": [\n                {\n                    \"id\": \"2\",\n                    \"name\": \"Jerald\",\n                    \"type\": \"BH\"\n                },\n                {\n                    \"id\": \"4\",\n                    \"name\": \"Sydni\",\n                    \"type\": \"AL\"\n                },\n                {\n                    \"id\": \"5\",\n                    \"name\": \"Santino\",\n                    \"type\": \"RU\"\n                }\n            ]\n        },\n        {\n            \"id\": \"3\",\n            \"name\": \"illum optio qui\",\n            \"widgets\": [\n                {\n                    \"id\": \"3\",\n                    \"name\": \"Reina\",\n                    \"type\": \"TM\"\n                },\n                {\n                    \"id\": \"4\",\n                    \"name\": \"Sydni\",\n                    \"type\": \"AL\"\n                }\n            ]\n        }\n    ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/* -------- Setting up Bearer Token -------- */",
+							"const responseJson = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", responseJson['token']);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Jordi\",\r\n    \"password\": \"TestTest123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "\n### Login\nThis endpoint is used to authenticate and obtain a token for accessing protected resources.\n\n**Request Body**\n- `username` (string, required): The username of the user.\n- `password` (string, required): The password of the user.\n\n**Response**\n- `token` (string): The authentication token required for accessing protected resources.\n\n**Example**\n```\nPOST {{base_url}}/login\n{\n  \"username\": \"example_username\",\n  \"password\": \"example_password\"\n}\n```\n**Response**\n```\n{\n  \"token\": \"example_token\"\n}\n"
+			},
+			"response": [
+				{
+					"name": "Login as Jordi",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Jordi\",\r\n    \"password\": \"TestTest123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/login",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "987"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 20 Apr 2024 07:00:53 GMT"
+						},
+						{
+							"key": "x-amzn-RequestId",
+							"value": "008aee70-7e1a-4298-8b92-d1ea72b8bd09"
+						},
+						{
+							"key": "x-amz-apigw-id",
+							"value": "Wg017F8QCGYEu2A="
+						},
+						{
+							"key": "X-Amzn-Trace-Id",
+							"value": "Root=1-66236825-3cf997bd2f6884c7535e850b;Parent=5d4d392c1e41b6e9;Sampled=0;lineage=4c46567a:0"
+						},
+						{
+							"key": "X-Cache",
+							"value": "Miss from cloudfront"
+						},
+						{
+							"key": "Via",
+							"value": "1.1 e0e00cad5101fc9c4314eb9d81c18aca.cloudfront.net (CloudFront)"
+						},
+						{
+							"key": "X-Amz-Cf-Pop",
+							"value": "MAD53-P3"
+						},
+						{
+							"key": "X-Amz-Cf-Id",
+							"value": "x3R7Ph32QWQOzFJBHEFKCJKZr3YBs0JU166vAZrSeSnp_N7wSRRFDg=="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJraWQiOiJpMzRqTUJ2d3NhMEpVMGVxdlV6SjdmUTZ0cEVyN0VPSG5WWkxWOWR0ZVwvWT0iLCJhbGciOiJSUzI1NiJ9.eyJvcmlnaW5fanRpIjoiNmY5NmQ2ZjUtOWQ4NC00MTNkLTgwODUtNDdkZmM4M2FhY2FhIiwic3ViIjoiNzFlOTIwZmUtYjAyMS03MGFmLTU1ODMtOGI3ZDYzMWU1ZmQ3IiwiYXVkIjoiNTQ4MWxrc2I3cDQ0bDVodjJhbDY3Z2dlNGUiLCJldmVudF9pZCI6IjU2NzYwYzRkLTJlNmYtNDY2ZC05ZTQ5LTVlZGMwOGNlNGExZCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzEzNTk2NDUzLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0zLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtM19BM2JKU1EycDMiLCJjb2duaXRvOnVzZXJuYW1lIjoiSm9yZGkiLCJleHAiOjE3MTM2ODI4NTMsImlhdCI6MTcxMzU5NjQ1MywianRpIjoiYjMwNDQ0NGMtMTI5ZS00OTRjLWFhZTctYTE5NjJiOTk3OThmIn0.GMljwmMRrxrftM1tBiDgqKH4XaLovgJOfj5gWIwkUXQwABwM2ga1I0wSEjARtRJEqkXQAZQ4nOT9ws6RaUime-PI8mJ2dKYfrZR54ZlZpLadSBrvdq7vnzve1T_xX98WiMhsaqT5IsgghA999pt2xGieDiNW4spbo_9MwBA0fphT3G3daYxtobhnxBWRyofWK82L2qxTwlm_ayOdu96905WLgLn9D1ehuDWeJMIZGJBuahu69aRWF_TPPT_gy3apn9aKF7J0sMD11lSLRStBBHZ9diTPEhEnQYdXLgkkosdsGgn-G6jeNpJFGaoSqHy78pGps6IydrE4H4bUh8qcZg\"\n}"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "base_url",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}

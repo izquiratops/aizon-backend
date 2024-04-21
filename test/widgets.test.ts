@@ -14,7 +14,7 @@ describe('Widgets', () => {
     ddbMock.reset();
   });
 
-  describe('GET Widget by Id', () => {
+  describe('🔸GET Widget by Id', () => {
     test('✅ should return 200 with the widget stringified on the body', async () => {
       ddbMock.on(GetCommand).resolves({
         Item: { id: '0', name: 'Wilburn', type: 'PL' },
@@ -74,5 +74,17 @@ describe('Widgets', () => {
 
       expect(result.statusCode).toEqual(500);
     });
+  });
+
+  describe.skip('🔸PUT Widget', () => {
+    // TODO
+  });
+
+  describe.skip('🔸DELETE Widget', () => {
+    // TODO
+  });
+
+  describe.skip('🔸GET Widgets', () => {
+    // TODO
   });
 });
