@@ -30,6 +30,8 @@ export class WidgetStore {
   ): Promise<Array<Widget> | undefined> {
     const widgets: Array<Widget> = [];
 
+    // ! This function should use BatchGetItemCommand, but I'm having issues with
+    // unauthorized errors even after granting read access to the table Widgets.
     for (const id of ids) {
       const params = new GetCommand({
         TableName: WidgetStore.tableName,
