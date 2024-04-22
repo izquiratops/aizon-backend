@@ -39,7 +39,7 @@ export const lambdaHandler = async (
       statusCode: 400,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: 'Failed to parse from request body: Widget is not an object',
+        message: 'Failed to parse from request body: Widget must be an object',
       }),
     };
   }

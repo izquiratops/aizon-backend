@@ -23,7 +23,7 @@ describe('Widgets', () => {
     ddbMock.reset();
   });
 
-  describe('🔸GET Widget by Id', () => {
+  describe('🔸GET Widget', () => {
     test('✅ should return 200 with the widget found on the body', async () => {
       ddbMock.on(GetCommand).resolves({
         Item: { id: '0', name: 'Wilburn', type: 'PL' },

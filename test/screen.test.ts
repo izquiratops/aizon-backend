@@ -21,7 +21,7 @@ describe('Screens', () => {
     ddbMock.reset();
   });
 
-  describe('🔸GET Screen by Id', () => {
+  describe('🔸GET Screen', () => {
     test('✅ should return 200 with the screen found on the body', async () => {
       // Get from Screen table
       ddbMock
