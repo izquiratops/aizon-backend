@@ -30,7 +30,7 @@ export const lambdaHandler = async (
     if (!result) {
       return {
         statusCode: 204,
-        body: 'Screen not found',
+        body: JSON.stringify({ message: 'Screen not found' }),
       };
     }
 

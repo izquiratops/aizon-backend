@@ -31,8 +31,15 @@ export const lambdaHandler = async (
 
     const response = await cognito.send(command);
 
-    // Authentication result is not available, indicating bad credentials
-    if (!response.AuthenticationResult) {
+    return {
+      statusCode: 200,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        token: response.AuthenticationResult?.IdToken,
+      }),
+    };
+  } catch (error: any) {
+    if (error.name === 'NotAuthorizedException') {
       return {
         statusCode: 422,
         headers: { 'content-type': 'application/json' },
@@ -43,14 +50,6 @@ export const lambdaHandler = async (
       };
     }
 
-    return {
-      statusCode: 200,
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        token: response.AuthenticationResult?.IdToken,
-      }),
-    };
-  } catch (error: any) {
     return {
       statusCode: 500,
       headers: { 'content-type': 'application/json' },

@@ -41,16 +41,25 @@ describe('Login', () => {
 
     test('⛔ should return 422 on missing credentials', async () => {
       // Resolving with an empty object means unsuccessful authentication
-      ddbMock.on(AdminInitiateAuthCommand).resolves({});
+      ddbMock.on(AdminInitiateAuthCommand).rejects({
+        name: 'NotAuthorizedException',
+      });
 
       const result: APIGatewayProxyResult = await postLogin({
         body: {
-          username: 'NonExistentUsername',
-          password: 'NonExistentPassword',
+          username: 'BadUsername',
+          password: 'BadPassword',
         },
       } as any);
 
-      expect(result.statusCode).toEqual(422);
+      expect(result).toEqual({
+        statusCode: 422,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message:
+            'Invalid username or password. Please check your credentials and try again.',
+        }),
+      });
     });
 
     test('⛔ should return 500 on database throwing an Error', async () => {

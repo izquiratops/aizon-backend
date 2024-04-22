@@ -1,4 +1,5 @@
 import middy from '@middy/core';
+import jsonBodyParser from '@middy/http-json-body-parser';
 import cors from '@middy/http-cors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { ScreenStore } from '../../store/screen';
@@ -29,25 +30,25 @@ export const lambdaHandler = async (
     };
   }
 
-  // TODO: refactor the same as its on the put widget function
-  // Parse the body filled with the Screen object
-  let screen: Screen;
-  try {
-    screen = JSON.parse(event.body);
-
-    if (typeof screen !== 'object') {
-      throw Error('Parsed Screen is not an object');
-    }
-
-    if (!screen.name) {
-      throw Error('Screen lacks of required fields');
-    }
-  } catch {
+  // ! event.body is typed to string, but it's actually an object
+  let screen: Screen = event.body as any;
+  if (typeof screen !== 'object') {
     return {
       statusCode: 400,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: 'Failed to parse the request body',
+        message: 'Failed to parse the request body: Screen must be an object',
+      }),
+    };
+  }
+
+  if (!screen.name) {
+    return {
+      statusCode: 400,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        message:
+          'Failed to parse the request body: Screen lacks of required fields',
       }),
     };
   }
@@ -83,6 +84,6 @@ export const lambdaHandler = async (
   }
 };
 
-const handler = middy(lambdaHandler).use(cors());
+const handler = middy(lambdaHandler).use(jsonBodyParser()).use(cors());
 
 export { handler };

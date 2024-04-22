@@ -27,7 +27,7 @@ export const lambdaHandler = async (
     if (!result) {
       return {
         statusCode: 204,
-        body: 'Widget not found',
+        body: JSON.stringify({ message: 'Widget not found' }),
       };
     }
 

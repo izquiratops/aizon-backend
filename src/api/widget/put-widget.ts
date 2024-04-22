@@ -3,6 +3,7 @@ import jsonBodyParser from '@middy/http-json-body-parser';
 import cors from '@middy/http-cors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { WidgetStore } from '../../store/widget';
+import { Widget } from '../../model/widget';
 
 const store = new WidgetStore();
 
@@ -31,8 +32,8 @@ export const lambdaHandler = async (
     };
   }
 
-  // Parse the body filled with the Widget object
-  const widget = event.body as any;
+  // ! event.body is typed to string, but it's actually an object
+  const widget: Widget = event.body as any;
   if (typeof widget !== 'object') {
     return {
       statusCode: 400,

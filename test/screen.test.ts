@@ -1,5 +1,3 @@
-// Really useful source about mocking from the AWS blog
-// https://aws.amazon.com/es/blogs/developer/mocking-modular-aws-sdk-for-javascript-v3-in-unit-tests/
 import { mockClient } from 'aws-sdk-client-mock';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import {
@@ -9,29 +7,38 @@ import {
   PutCommand,
   ScanCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { lambdaHandler as getWidget } from '../src/api/widget/get-widget';
-import { lambdaHandler as putWidget } from '../src/api/widget/put-widget';
-import { lambdaHandler as deleteWidget } from '../src/api/widget/delete-widget';
-import { lambdaHandler as getWidgets } from '../src/api/widget/get-widgets';
+import { lambdaHandler as getScreen } from '../src/api/screen/get-screen';
+import { lambdaHandler as putScreen } from '../src/api/screen/put-screen';
+import { lambdaHandler as deleteScreen } from '../src/api/screen/delete-screen';
+import { lambdaHandler as getScreens } from '../src/api/screen/get-screens';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-describe('Widgets', () => {
+describe('Screens', () => {
   // After every test execution, you need to reset the history and behavior of the mock.
   // Otherwise, the tests could interfere with each other.
   beforeEach(() => {
     ddbMock.reset();
   });
 
-  describe('🔸GET Widget by Id', () => {
-    test('✅ should return 200 with the widget found on the body', async () => {
-      ddbMock.on(GetCommand).resolves({
-        Item: { id: '0', name: 'Wilburn', type: 'PL' },
-      });
+  describe('🔸GET Screen by Id', () => {
+    test('✅ should return 200 with the screen found on the body', async () => {
+      // Get from Screen table
+      ddbMock
+        .on(GetCommand)
+        .resolvesOnce({
+          Item: { id: '0', name: 'Screen', widgetIds: ['0'] },
+        })
+        .resolvesOnce({
+          Item: { id: '0', name: 'Widget', type: 'PieChart' },
+        });
 
-      const result: APIGatewayProxyResult = await getWidget({
+      const result: APIGatewayProxyResult = await getScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
+        },
+        queryStringParameters: {
+          includeWidgets: 'true',
         },
       } as any);
 
@@ -40,7 +47,17 @@ describe('Widgets', () => {
         headers: {
           'content-type': 'application/json',
         },
-        body: JSON.stringify({ id: '0', name: 'Wilburn', type: 'PL' }),
+        body: JSON.stringify({
+          id: '0',
+          name: 'Screen',
+          widgets: [
+            {
+              id: '0',
+              name: 'Widget',
+              type: 'PieChart',
+            },
+          ],
+        }),
       });
     });
 
@@ -49,24 +66,24 @@ describe('Widgets', () => {
         Item: undefined,
       });
 
-      const result: APIGatewayProxyResult = await getWidget({
+      const result: APIGatewayProxyResult = await getScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
       } as any);
 
       expect(result).toEqual({
         statusCode: 204,
-        body: JSON.stringify({ message: 'Widget not found' }),
+        body: JSON.stringify({ message: 'Screen not found' }),
       });
     });
 
     test('⛔ should return 400 on missing Id', async () => {
       ddbMock.on(GetCommand).resolves({
-        Item: { id: '0', name: 'Wilburn', type: 'PL' },
+        Item: { id: '0', name: 'Screen', widgetIds: ['0'] },
       });
 
-      const result: APIGatewayProxyResult = await getWidget({
+      const result: APIGatewayProxyResult = await getScreen({
         pathParameters: {
           widgetId: undefined,
         },
@@ -82,9 +99,9 @@ describe('Widgets', () => {
     test('⛔ should return 500 on database throwing an Error', async () => {
       ddbMock.on(GetCommand).rejects();
 
-      const result: APIGatewayProxyResult = await getWidget({
+      const result: APIGatewayProxyResult = await getScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
       } as any);
 
@@ -92,18 +109,18 @@ describe('Widgets', () => {
     });
   });
 
-  describe('🔸PUT Widget', () => {
+  describe('🔸PUT Screen', () => {
     test('✅ should return 201 on successful save', async () => {
       ddbMock.on(PutCommand).resolves({});
 
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
         body: {
           id: '0',
-          name: 'Sales',
-          type: 'PieChart',
+          name: 'Example Screen',
+          widgetIds: ['2', '5'],
         },
       } as any);
 
@@ -111,20 +128,20 @@ describe('Widgets', () => {
         statusCode: 201,
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          message: 'Widget created',
+          message: 'Screen created',
         }),
       });
     });
 
     test('⛔ should return 400 on missing Id', async () => {
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: undefined, // ! Id missing on the URL
+          screenId: undefined,
         },
         body: {
           id: '0',
-          name: 'Sales',
-          type: 'PieChart',
+          name: 'Example Screen',
+          widgetIds: ['2', '5'],
         },
       } as any);
 
@@ -136,9 +153,9 @@ describe('Widgets', () => {
     });
 
     test('⛔ should return 400 on missing Body', async () => {
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
         body: undefined,
       } as any);
@@ -151,9 +168,9 @@ describe('Widgets', () => {
     });
 
     test('⛔ should return 400 on parse error', async () => {
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
         body: 'Not what lambda expects',
       } as any);
@@ -162,21 +179,20 @@ describe('Widgets', () => {
         statusCode: 400,
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          message:
-            'Failed to parse from request body: Widget must be an object',
+          message: 'Failed to parse the request body: Screen must be an object',
         }),
       });
     });
 
     test('⛔ should return 400 on missing required fields', async () => {
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
         body: {
           id: '0',
           // name: 'Missing name',
-          type: 'PieChart',
+          widgetIds: ['2', '5'],
         },
       } as any);
 
@@ -185,20 +201,20 @@ describe('Widgets', () => {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           message:
-            'Failed to parse from request body: Widget lacks of required fields',
+            'Failed to parse the request body: Screen lacks of required fields',
         }),
       });
     });
 
     test('⛔ should return 400 on missmatching Ids', async () => {
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '22',
+          screenId: '22',
         },
         body: {
           id: '94',
-          name: 'Sales',
-          type: 'PieChart',
+          name: 'Example Screen',
+          widgetIds: ['2', '5'],
         },
       } as any);
 
@@ -207,7 +223,7 @@ describe('Widgets', () => {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           message:
-            'Requested Id (22) does not match the Widget Id from body (94)',
+            'Requested Id (22) does not match the Screen Id from body (94)',
         }),
       });
     });
@@ -215,14 +231,14 @@ describe('Widgets', () => {
     test('⛔ should return 500 on database throwing an Error', async () => {
       ddbMock.on(PutCommand).rejects();
 
-      const result: APIGatewayProxyResult = await putWidget({
+      const result: APIGatewayProxyResult = await putScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
         body: {
           id: '0',
-          name: 'Sales',
-          type: 'PieChart',
+          name: 'Example Screen',
+          widgetIds: ['2', '5'],
         },
       } as any);
 
@@ -230,13 +246,13 @@ describe('Widgets', () => {
     });
   });
 
-  describe('🔸DELETE Widget', () => {
+  describe('🔸DELETE Screen', () => {
     test('✅ should return 201 on successful delete', async () => {
       ddbMock.on(DeleteCommand).resolves({});
 
-      const result: APIGatewayProxyResult = await deleteWidget({
+      const result: APIGatewayProxyResult = await deleteScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
       } as any);
 
@@ -244,15 +260,15 @@ describe('Widgets', () => {
         statusCode: 201,
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          message: 'Widget deleted',
+          message: 'Screen deleted',
         }),
       });
     });
 
     test('⛔ should return 400 on missing Id', async () => {
-      const result: APIGatewayProxyResult = await deleteWidget({
+      const result: APIGatewayProxyResult = await deleteScreen({
         pathParameters: {
-          widgetId: undefined, // ! Id missing on the URL
+          screenId: undefined, // ! Id missing on the URL
         },
       } as any);
 
@@ -266,9 +282,9 @@ describe('Widgets', () => {
     test('⛔ should return 500 on database throwing an Error', async () => {
       ddbMock.on(DeleteCommand).rejects();
 
-      const result: APIGatewayProxyResult = await deleteWidget({
+      const result: APIGatewayProxyResult = await deleteScreen({
         pathParameters: {
-          widgetId: '0',
+          screenId: '0',
         },
       } as any);
 
@@ -276,24 +292,38 @@ describe('Widgets', () => {
     });
   });
 
-  describe('🔸GET Widgets', () => {
+  describe('🔸GET Screens', () => {
     test('✅ should return 200 with all the widgets found', async () => {
       ddbMock.on(ScanCommand).resolves({
         Items: [
           {
-            id: '1',
-            name: 'Michel',
-            type: 'MM',
+            id: '0',
+            name: 'First Screen',
+            widgetIds: ['0', '1'],
           },
           {
-            id: '2',
-            name: 'Jerald',
-            type: 'BH',
+            id: '1',
+            name: 'Second Screen',
+            widgetIds: ['2'],
           },
         ],
       });
 
-      const result: APIGatewayProxyResult = await getWidgets();
+      ddbMock
+        .on(GetCommand)
+        .resolvesOnce({
+          Item: { id: '0', name: 'First Widget', type: 'ChartPie' },
+        })
+        .resolvesOnce({
+          Item: { id: '1', name: 'Second Widget', type: 'BarChart' },
+        })
+        .resolvesOnce({
+          Item: { id: '2', name: 'Third Widget', type: 'LineChart' },
+        });
+
+      const result: APIGatewayProxyResult = await getScreens({
+        queryStringParameters: { includeWidgets: 'true' },
+      } as any);
 
       expect(result).toEqual({
         statusCode: 200,
@@ -301,16 +331,19 @@ describe('Widgets', () => {
           'content-type': 'application/json',
         },
         body: JSON.stringify({
-          widgets: [
+          screens: [
             {
-              id: '1',
-              name: 'Michel',
-              type: 'MM',
+              id: '0',
+              name: 'First Screen',
+              widgets: [
+                { id: '0', name: 'First Widget', type: 'ChartPie' },
+                { id: '1', name: 'Second Widget', type: 'BarChart' },
+              ],
             },
             {
-              id: '2',
-              name: 'Jerald',
-              type: 'BH',
+              id: '1',
+              name: 'Second Screen',
+              widgets: [{ id: '2', name: 'Third Widget', type: 'LineChart' }],
             },
           ],
         }),
@@ -320,7 +353,9 @@ describe('Widgets', () => {
     test('⛔ should return 500 on database throwing an Error', async () => {
       ddbMock.on(GetCommand).rejects();
 
-      const result: APIGatewayProxyResult = await getWidgets();
+      const result: APIGatewayProxyResult = await getScreens({
+        queryStringParameters: { includeWidgets: 'true' },
+      } as any);
 
       expect(result.statusCode).toEqual(500);
     });

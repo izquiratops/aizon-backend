@@ -68,8 +68,8 @@ export class AizonServerlessStack extends Stack {
 
     const appIntegrationClient = userPool.addClient('WebClient', {
       userPoolClientName: 'AizonWebClient',
-      idTokenValidity: Duration.days(1),
-      accessTokenValidity: Duration.days(1),
+      idTokenValidity: Duration.hours(1),
+      accessTokenValidity: Duration.hours(1),
       authFlows: {
         adminUserPassword: true,
       },
