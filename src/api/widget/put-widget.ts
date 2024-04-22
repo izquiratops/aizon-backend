@@ -1,10 +1,12 @@
 import middy from '@middy/core';
+import jsonBodyParser from '@middy/http-json-body-parser';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { WidgetStore } from '../../store/widget';
-import { Widget } from '../../model/widget';
 
 const store = new WidgetStore();
 
+// ! About typing Body: https://github.com/middyjs/middy/issues/316
+// Not doing it because I don't have enough time
 export const lambdaHandler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
@@ -29,23 +31,24 @@ export const lambdaHandler = async (
   }
 
   // Parse the body filled with the Widget object
-  let widget: Widget;
-  try {
-    widget = JSON.parse(event.body) as Widget;
-
-    if (typeof widget !== 'object') {
-      throw Error('Parsed product is not an object');
-    }
-
-    if (!widget.name || !widget.type) {
-      throw Error('Product lacks of required fields');
-    }
-  } catch {
+  const widget = event.body as any;
+  if (typeof widget !== 'object') {
     return {
       statusCode: 400,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: 'Failed to parse product from request body',
+        message: 'Failed to parse from request body: Widget is not an object',
+      }),
+    };
+  }
+
+  if (!widget.name || !widget.type) {
+    return {
+      statusCode: 400,
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        message:
+          'Failed to parse from request body: Widget lacks of required fields',
       }),
     };
   }
@@ -81,6 +84,6 @@ export const lambdaHandler = async (
   }
 };
 
-const handler = middy(lambdaHandler);
+const handler = middy(lambdaHandler).use(jsonBodyParser());
 
 export { handler };

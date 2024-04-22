@@ -1,5 +1,6 @@
 import middy from '@middy/core';
 import jsonBodyParser from '@middy/http-json-body-parser';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import {
   AdminInitiateAuthCommand,
   CognitoIdentityProviderClient,
@@ -13,15 +14,17 @@ const cognito = new CognitoIdentityProviderClient({
   },
 });
 
-export const lambdaHandler = async (event: any = {}): Promise<any> => {
+export const lambdaHandler = async (
+  event: APIGatewayProxyEvent
+): Promise<APIGatewayProxyResult> => {
   try {
     const command = new AdminInitiateAuthCommand({
       AuthFlow: 'ADMIN_NO_SRP_AUTH',
       ClientId: process.env.COGNITO_APP_CLIENT_ID!,
       UserPoolId: process.env.COGNITO_USER_POOL_ID!,
       AuthParameters: {
-        USERNAME: event.body.username,
-        PASSWORD: event.body.password,
+        USERNAME: (event.body as any).username,
+        PASSWORD: (event.body as any).password,
       },
     });
 

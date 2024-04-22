@@ -1557,6 +1557,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@middy/http-cors@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "@middy/http-cors@npm:5.3.2"
+  dependencies:
+    "@middy/util": 5.3.2
+  checksum: 0b88766f9246299009e9ff2db4493efc8af9a1271ec77d689d137566690fdfdc0e5aa11692f57e413caf7eed823e381189a978c1e6f7e44fe2665d4ba2027e06
+  languageName: node
+  linkType: hard
+
 "@middy/http-json-body-parser@npm:^5.3.2":
   version: 5.3.2
   resolution: "@middy/http-json-body-parser@npm:5.3.2"
@@ -2355,6 +2364,7 @@ __metadata:
     "@aws-sdk/client-dynamodb": ^3.554.0
     "@aws-sdk/lib-dynamodb": ^3.554.0
     "@middy/core": ^5.3.2
+    "@middy/http-cors": ^5.3.2
     "@middy/http-json-body-parser": ^5.3.2
     "@types/aws-lambda": ^8.10.137
     "@types/jest": ^29.5.12
