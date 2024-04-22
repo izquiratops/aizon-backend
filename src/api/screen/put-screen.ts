@@ -1,4 +1,5 @@
 import middy from '@middy/core';
+import cors from '@middy/http-cors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { ScreenStore } from '../../store/screen';
 import { Screen } from '../../model/screen';
@@ -28,13 +29,14 @@ export const lambdaHandler = async (
     };
   }
 
+  // TODO: refactor the same as its on the put widget function
   // Parse the body filled with the Screen object
   let screen: Screen;
   try {
     screen = JSON.parse(event.body);
 
     if (typeof screen !== 'object') {
-      throw Error('Parsed product is not an object');
+      throw Error('Parsed Screen is not an object');
     }
 
     if (!screen.name) {
@@ -45,7 +47,7 @@ export const lambdaHandler = async (
       statusCode: 400,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        message: 'Failed to parse product from request body',
+        message: 'Failed to parse the request body',
       }),
     };
   }
@@ -81,6 +83,6 @@ export const lambdaHandler = async (
   }
 };
 
-const handler = middy(lambdaHandler);
+const handler = middy(lambdaHandler).use(cors());
 
 export { handler };

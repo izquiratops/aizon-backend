@@ -1,5 +1,6 @@
 import middy from '@middy/core';
 import jsonBodyParser from '@middy/http-json-body-parser';
+import cors from '@middy/http-cors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { WidgetStore } from '../../store/widget';
 
@@ -84,6 +85,6 @@ export const lambdaHandler = async (
   }
 };
 
-const handler = middy(lambdaHandler).use(jsonBodyParser());
+const handler = middy(lambdaHandler).use(jsonBodyParser()).use(cors());
 
 export { handler };

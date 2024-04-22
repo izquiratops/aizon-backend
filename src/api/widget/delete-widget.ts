@@ -1,4 +1,5 @@
 import middy from '@middy/core';
+import cors from '@middy/http-cors';
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { WidgetStore } from '../../store/widget';
 
@@ -37,6 +38,6 @@ export const lambdaHandler = async (
   }
 };
 
-const handler = middy(lambdaHandler);
+const handler = middy(lambdaHandler).use(cors());
 
 export { handler };
